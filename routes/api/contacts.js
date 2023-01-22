@@ -7,20 +7,21 @@ const auth = require("../../middlewares/auth");
 
 const validateMiddleware = validation(joiSchema);
 
-router.get("/", controllers.getAll);
+router.get("/", auth, controllers.getAll);
 
-router.get("/:id", controllers.getById);
+router.get("/:id", auth, controllers.getById);
 
 router.post("/", auth, validateMiddleware, controllers.add);
 
-router.put("/:id", validateMiddleware, controllers.updateById);
+router.put("/:id", auth, validateMiddleware, controllers.updateById);
 
 router.patch(
   "/:id/favourite",
+  auth,
   validation(favJoiSchema),
   controllers.updateFavourite
 );
 
-router.delete("/:id", controllers.removeById);
+router.delete("/:id", auth, controllers.removeById);
 
 module.exports = router;
