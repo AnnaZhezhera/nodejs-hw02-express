@@ -5,6 +5,7 @@ const getAll = async (req, res, next) => {
   const { page = 1, limit = 5, favourite } = req.query;
   const skip = (page - 1) * limit;
   try {
+    // варіант, де при виборі false, вибираються всі об*єкти
     const listOfContacts = await Contact.find(
       favourite === "true"
         ? { owner: _id, favourite: true }
