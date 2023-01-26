@@ -8,13 +8,12 @@ const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
+app.use(express.static("public"));
 
 const authRouter = require("./routes/api/users");
-// const currentUsersRouter = require("./routes/api/currentUsers");
 const contactsRouter = require("./routes/api/contacts");
 
 app.use("/api/users", authRouter);
-// app.use("/api/users/current", currentUsersRouter);
 app.use("/api/contacts", contactsRouter);
 
 app.use((req, res) => {

@@ -4,6 +4,7 @@ const { users: controllers } = require("../../controllers");
 const { joiSchema, joiSubscriptionSchema } = require("../../models/user");
 const validation = require("../../middlewares/validation");
 const auth = require("../../middlewares/auth");
+const upload = require("../../middlewares/upload");
 
 const validateMiddleware = validation(joiSchema);
 const validateSubscriptionMiddleware = validation(joiSubscriptionSchema);
@@ -22,5 +23,12 @@ router.patch(
 );
 
 router.get("/logout", auth, controllers.logout);
+
+router.patch(
+  "/avatars",
+  auth,
+  upload.single("avatar"),
+  controllers.updateAvatar
+);
 
 module.exports = router;

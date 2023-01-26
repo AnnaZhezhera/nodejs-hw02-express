@@ -4,7 +4,6 @@ const { User } = require("../models/user");
 
 // запише дані в getCurrent.js(req.user) про те, який user надсилає запит
 const auth = async (req, res, next) => {
-  console.log("entering auth");
   const { authorization = "" } = req.headers;
   const [bearer, token] = authorization.split(" ");
 
