@@ -12,10 +12,10 @@ const { DB_HOST } = process.env;
 
 describe("login", () => {
   beforeAll(async () => {
-    await mongoose.connect(DB_HOST);
+    mongoose.connect(DB_HOST);
   });
-  afterAll(async () => {
-    await mongoose.disconnect(DB_HOST);
+  afterAll(() => {
+    mongoose.disconnect(DB_HOST);
   });
 
   it("status code should be 200", async () => {
