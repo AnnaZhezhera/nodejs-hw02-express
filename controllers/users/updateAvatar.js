@@ -23,16 +23,9 @@ const updateAvatar = async (req, res) => {
 
     res.json({ avatarURL });
   } catch (error) {
-    if (await checkFileExists(tmpUpload)) await fs.unlink(tmpUpload);
+    await fs.unlink(tmpUpload);
     throw error;
   }
 };
-
-function checkFileExists(file) {
-  return fs
-    .access(file, fs.constants.F_OK)
-    .then(() => true)
-    .catch(() => false);
-}
 
 module.exports = updateAvatar;
