@@ -1,7 +1,13 @@
 const { Conflict } = require("http-errors");
 const bcrypt = require("bcrypt");
 const gravatar = require("gravatar");
+const { nanoid } = require("nanoid");
+require("dotenv").config();
+
+const { PORT } = process.env;
+
 const { User } = require("../../models/user");
+const sendEmail = require("../../helpers/sendMail");
 
 const signup = async (req, res, next) => {
   try {
@@ -13,21 +19,34 @@ const signup = async (req, res, next) => {
     }
     const avatarURL = gravatar.url(email);
     const hashPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-    const result = await User.create({
+
+    const verificationToken = nanoid();
+
+    const newUser = await User.create({
       email,
       password: hashPassword,
       subscription,
       avatarURL,
+      verificationToken,
     });
+
+    const mail = {
+      to: email,
+      subject: "Email confirmation",
+      html: `<a target="_blank" href="http://localhost:${PORT}/api/users/verify/${verificationToken}>Press to confirm registration</a>`,
+    };
+
+    await sendEmail(mail);
 
     res.status(201).json({
       status: "success",
       code: 201,
       data: {
-        user: {
+        newUser: {
           email,
           subscription,
           avatarURL,
+          verificationToken,
         },
       },
     });
